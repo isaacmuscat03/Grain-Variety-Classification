@@ -1,0 +1,1 @@
+This is the repository for the thesis project titled: Classification of grain varieties using hyperspectral imaging and deep learning

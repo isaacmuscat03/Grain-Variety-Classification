@@ -3,8 +3,11 @@ import pandas as pd
 import subprocess, os
 import h5py
 import numpy as np
+import random
+import matplotlib.pyplot as plt
 
-def load():
+
+def load_data():
     # Mounting dataset from D: to WSL 
     WINDOWS_DRIVE = "E:"   
     WINDOWS_PATH = r"E:\HSI_Dataset_2\Elements\data"
@@ -142,7 +145,7 @@ def load():
     train_files.loc[:, 'size'] = train_files['batch'].str[0]          
     train_files.loc[:, 'rep']  = train_files['batch'].str[1:].astype(int)   
 
-    return train_files
+    return train_files, valid_files, test_files
 
 def load_cube(path, verbose=False):
 
@@ -167,3 +170,83 @@ def load_cube(path, verbose=False):
         wlens = f['hypercube'].attrs['wavelength_nm']
 
     return hcube, wlens, darkref, whiteref
+    
+def visualize_hcube_FX10(path_FX10):
+    # Load hyperspectral cube
+    hcube, wlens, darkref, whiteref = load_cube(path_FX10)
+    wlens = wlens.astype(int)
+
+    # Show 25 random bands
+    fig, axs = plt.subplots(nrows=5, ncols=5, figsize=(20, 20))
+
+    channels = random.sample(range(len(wlens)), 25)
+    channels = np.sort(channels)
+
+    for i, channel in enumerate(channels):
+        row = i // 5
+        col = i % 5
+        axs[row, col].imshow(hcube[:, :, channel], cmap='viridis')
+        axs[row, col].set_title(f"band {channel}, λ={wlens[channel]} nm")
+        axs[row, col].axis("off")
+
+    plt.tight_layout()
+    plt.show()
+
+def calibrate_reflectance(hcube_raw, darkref, whiteref, eps=1e-6):
+    H, W, B = hcube_raw.shape
+
+    def _prepare(ref):
+        if ref is None:
+            return 0.0
+
+        ref = np.asarray(ref)
+
+        # Case 1: per-band vector (B,)
+        if ref.ndim == 1:
+            if ref.shape[0] != B:
+                raise ValueError(f"1D ref length {ref.shape[0]} != n_bands {B}")
+            return ref.reshape(1, 1, B)
+
+        # Case 2: full cube already (H, W, B)
+        if ref.ndim == 3:
+            if ref.shape == (H, W, B):
+                return ref
+            if ref.shape == (1, W, B):
+                return ref
+            raise ValueError(f"3D ref shape {ref.shape} not compatible with cube {hcube_raw.shape}")
+
+        # Case 3: 2D references
+        if ref.ndim == 2:
+            # (B, W) -> (1, W, B)
+            if ref.shape == (B, W):
+                ref2 = ref.T[None, :, :]      # (1, W, B)
+                return ref2
+            # (H, W) -> (H, W, 1)
+            if ref.shape == (H, W):
+                return ref[:, :, None]
+
+            raise ValueError(f"2D ref shape {ref.shape} not compatible with cube {hcube_raw.shape}")
+
+        raise ValueError(f"Unsupported ref ndim={ref.ndim} and shape={ref.shape}")
+
+    dark = _prepare(darkref)
+    white = _prepare(whiteref)
+
+    num = hcube_raw - dark
+    denom = white - dark
+
+    R = num / (denom + eps)
+    R = np.clip(R, 0, 1)
+
+    return R
+
+def make_rgb(hcube, band_ids=(60, 108, 163)):
+    H, W, B = hcube.shape
+    rgb = np.zeros((H, W, 3), dtype=np.float32)
+
+    for i, b in enumerate(band_ids):
+        v = hcube[:, :, b]
+        lo, hi = np.percentile(v, (2, 98))  
+        rgb[:, :, i] = np.clip((v - lo) / (hi - lo + 1e-6), 0, 1)
+
+    return rgb

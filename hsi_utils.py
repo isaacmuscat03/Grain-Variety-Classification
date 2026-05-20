@@ -6,7 +6,6 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 
-
 def load_data():
     # Mounting dataset from D: to WSL 
     WINDOWS_DRIVE = "E:"   
@@ -145,7 +144,7 @@ def load_data():
     train_files.loc[:, 'size'] = train_files['batch'].str[0]          
     train_files.loc[:, 'rep']  = train_files['batch'].str[1:].astype(int)   
 
-    return train_files, valid_files, test_files
+    return train_files, valid_files, test_files, files_split
 
 def load_cube(path, verbose=False):
 

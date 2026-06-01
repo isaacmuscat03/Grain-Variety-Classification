@@ -5,6 +5,11 @@ import h5py
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+from skimage.filters import threshold_otsu
+from scipy import ndimage as ndi
+from skimage.morphology import remove_small_objects, remove_small_holes, closing, opening, disk
+from skimage.feature import peak_local_max
+from skimage.segmentation import watershed
 
 def load_data():
     # Mounting dataset from D: to WSL 
@@ -249,3 +254,31 @@ def make_rgb(hcube, band_ids=(60, 108, 163)):
         rgb[:, :, i] = np.clip((v - lo) / (hi - lo + 1e-6), 0, 1)
 
     return rgb
+
+
+def build_foreground_mask(hcube, min_size=500, otsu_factor=0.50, use_watershed=True):
+    """
+    PCA_original-style mask, but with a relaxed Otsu threshold.
+    """
+
+    mean_img = hcube.mean(axis=2)
+
+    thresh = threshold_otsu(mean_img)
+    binary = mean_img > (otsu_factor * thresh)
+
+    binary = remove_small_objects(binary, min_size=min_size)
+
+    if not use_watershed:
+        return binary
+
+    dist = ndi.distance_transform_edt(binary)
+    coords = peak_local_max(dist, min_distance=10, labels=binary)
+
+    markers = np.zeros_like(binary, dtype=int)
+    if len(coords) > 0:
+        markers[tuple(coords.T)] = np.arange(1, len(coords) + 1)
+
+    markers = ndi.label(markers)[0]
+    labels = watershed(-dist, markers, mask=binary)
+
+    return labels > 0

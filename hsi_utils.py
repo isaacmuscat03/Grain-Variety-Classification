@@ -7,7 +7,7 @@ import random
 import matplotlib.pyplot as plt
 from skimage.filters import threshold_otsu
 from scipy import ndimage as ndi
-from skimage.morphology import remove_small_objects, remove_small_holes, closing, opening, disk
+from skimage.morphology import remove_small_objects, remove_small_holes, closing, opening, disk, binary_erosion, disk
 from skimage.feature import peak_local_max
 from skimage.segmentation import watershed
 
@@ -256,15 +256,20 @@ def make_rgb(hcube, band_ids=(60, 108, 163)):
     return rgb
 
 
-def build_foreground_mask(hcube, min_size=500, otsu_factor=0.50, use_watershed=True):
+def build_foreground_mask(hcube, min_size=500, use_watershed=True):
     """
     PCA_original-style mask, but with a relaxed Otsu threshold.
     """
 
-    mean_img = hcube.mean(axis=2)
+    #mean_img = hcube.mean(axis=2)
 
-    thresh = threshold_otsu(mean_img)
-    binary = mean_img > (otsu_factor * thresh)
+    gray = np.mean(
+        hcube[:, :, [50, 80, 110]], # rather than averaging all wavelengths, let's try just averaging 3 in different parts
+        axis=2
+    )
+
+    thresh = threshold_otsu(gray)
+    binary = gray >  thresh
 
     binary = remove_small_objects(binary, min_size=min_size)
 
@@ -281,4 +286,11 @@ def build_foreground_mask(hcube, min_size=500, otsu_factor=0.50, use_watershed=T
     markers = ndi.label(markers)[0]
     labels = watershed(-dist, markers, mask=binary)
 
-    return labels > 0
+    binary = labels > 0
+
+    binary = binary_erosion(
+        binary,
+        disk(1)
+    )
+
+    return binary

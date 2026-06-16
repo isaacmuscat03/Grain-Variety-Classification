@@ -10,6 +10,9 @@ from scipy import ndimage as ndi
 from skimage.morphology import remove_small_objects, remove_small_holes, closing, opening, disk, binary_erosion, disk
 from skimage.feature import peak_local_max
 from skimage.segmentation import watershed
+from scipy.ndimage import gaussian_filter, binary_dilation
+from scipy.ndimage import median_filter
+from skimage.filters import threshold_local
 
 def load_data():
     # Mounting dataset from D: to WSL 
@@ -256,41 +259,50 @@ def make_rgb(hcube, band_ids=(60, 108, 163)):
     return rgb
 
 
-def build_foreground_mask(hcube, min_size=500, use_watershed=True):
-    """
-    PCA_original-style mask, but with a relaxed Otsu threshold.
-    """
+def build_foreground_mask(
+    hcube,
+    med_size=3,
+    block_size=101,
+    method="gaussian",
+    offset=0,
+    closing_radius=2,
+    bin_iterations=1,
+    min_size=500,
+    area_threshold=3000
+):
 
-    #mean_img = hcube.mean(axis=2)
+    mean_img = hcube.mean(axis=2)
 
-    gray = np.mean(
-        hcube[:, :, [50, 80, 110]], # rather than averaging all wavelengths, let's try just averaging 3 in different parts
-        axis=2
+    # Robust normalize
+    lo, hi = np.percentile(mean_img, (1, 99))
+    mean_norm = np.clip((mean_img - lo) / (hi - lo + 1e-6), 0, 1)
+
+    # Estimate smooth illumination/background field
+    illumination = gaussian_filter(mean_norm, sigma=60)
+
+    # Correct left-right gradient
+    mean_corr = mean_norm / (illumination + 1e-6)
+
+    # Normalize corrected image again
+    lo2, hi2 = np.percentile(mean_corr, (1, 99))
+    mean_corr = np.clip((mean_corr - lo2) / (hi2 - lo2 + 1e-6), 0, 1)
+
+    mean_corr = median_filter(mean_corr, size=med_size)
+
+    local_thresh = threshold_local(
+        mean_corr,
+        block_size=block_size,
+        method=method,
+        offset=offset
     )
 
-    thresh = threshold_otsu(gray)
-    binary = gray >  thresh
+    binary = mean_corr > local_thresh
+
+    binary = closing(binary, disk(closing_radius))
+
+    binary = binary_dilation(binary, iterations=bin_iterations)
 
     binary = remove_small_objects(binary, min_size=min_size)
-
-    if not use_watershed:
-        return binary
-
-    dist = ndi.distance_transform_edt(binary)
-    coords = peak_local_max(dist, min_distance=10, labels=binary)
-
-    markers = np.zeros_like(binary, dtype=int)
-    if len(coords) > 0:
-        markers[tuple(coords.T)] = np.arange(1, len(coords) + 1)
-
-    markers = ndi.label(markers)[0]
-    labels = watershed(-dist, markers, mask=binary)
-
-    binary = labels > 0
-
-    binary = binary_erosion(
-        binary,
-        disk(1)
-    )
+    binary = remove_small_holes(binary, area_threshold=area_threshold)
 
     return binary

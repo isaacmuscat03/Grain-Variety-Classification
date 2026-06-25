@@ -8,11 +8,9 @@ import matplotlib.pyplot as plt
 from skimage.filters import threshold_otsu
 from scipy import ndimage as ndi
 from skimage.morphology import remove_small_objects, remove_small_holes, closing, opening, disk, binary_erosion, disk
-from skimage.feature import peak_local_max
-from skimage.segmentation import watershed
 from scipy.ndimage import gaussian_filter, binary_dilation
 from scipy.ndimage import median_filter
-from skimage.filters import threshold_local
+from skimage import exposure
 
 def load_data():
     # Mounting dataset from D: to WSL 
@@ -22,14 +20,12 @@ def load_data():
 
     # Mount drive if missing
     mnt_path = Path(f"/mnt/{WINDOWS_DRIVE[0].lower()}")
-    #if not mnt_path.exists():
+
     print(f" Mounting {WINDOWS_DRIVE} into {mnt_path} ...")
     subprocess.run(["sudo", "mkdir", "-p", str(mnt_path)], check=True)
     res = subprocess.run(["sudo", "mount", "-t", "drvfs", WINDOWS_DRIVE, str(mnt_path)], capture_output=True, text=True)
     if res.returncode != 0:
         raise RuntimeError(f"Failed to mount {WINDOWS_DRIVE}: {res.stderr}")
-    #else:
-    #    print(f"[OK] {mnt_path} already exists")
 
     # Verify dataset path 
     dataset_path = Path(str(WINDOWS_PATH).replace("\\", "/").replace(":", "").replace("E", "/mnt/e", 1))
@@ -72,7 +68,6 @@ def load_data():
     df = pd.DataFrame({"filepath_FX10": list(Path(f"{HR_ROOT}").rglob("**/*.hdf5"))})
     ## Give the sample name 
     df['sample_name'] = df.filepath_FX10.apply(lambda x : x.stem)
-
     df
 
     # find all .hdf5 files
@@ -261,14 +256,16 @@ def make_rgb(hcube, band_ids=(60, 108, 163)):
 
 def build_foreground_mask(
     hcube,
+    sigma=60,
     med_size=3,
-    block_size=101,
-    method="gaussian",
-    offset=0,
-    closing_radius=2,
-    bin_iterations=1,
-    min_size=500,
-    area_threshold=3000
+    closing_radius=3,
+    opening_radius=1,
+    erosion=1,
+    bin_iterations=2,
+    min_size=1,
+    area_threshold=50,
+    use_clahe=False,
+    clahe_clip=0.02
 ):
 
     mean_img = hcube.mean(axis=2)
@@ -278,31 +275,36 @@ def build_foreground_mask(
     mean_norm = np.clip((mean_img - lo) / (hi - lo + 1e-6), 0, 1)
 
     # Estimate smooth illumination/background field
-    illumination = gaussian_filter(mean_norm, sigma=60)
+    illumination = gaussian_filter(mean_norm, sigma=sigma)
 
     # Correct left-right gradient
-    mean_corr = mean_norm / (illumination + 1e-6)
-
+    mean_corr = mean_norm - illumination
+    
     # Normalize corrected image again
     lo2, hi2 = np.percentile(mean_corr, (1, 99))
     mean_corr = np.clip((mean_corr - lo2) / (hi2 - lo2 + 1e-6), 0, 1)
 
     mean_corr = median_filter(mean_corr, size=med_size)
 
-    local_thresh = threshold_local(
-        mean_corr,
-        block_size=block_size,
-        method=method,
-        offset=offset
-    )
+    # adapting to darker / low-contrast grains like flax
+    if use_clahe:
+        mean_corr = exposure.equalize_adapthist(
+            mean_corr,
+            clip_limit=clahe_clip
+        )
 
-    binary = mean_corr > local_thresh
+    # Global Otsu threshold
+    thresh = threshold_otsu(mean_corr)
+    binary = mean_corr > thresh
 
     binary = closing(binary, disk(closing_radius))
+    binary = opening(binary, disk(opening_radius))
 
+    binary = binary_erosion(binary, disk(erosion))
     binary = binary_dilation(binary, iterations=bin_iterations)
 
     binary = remove_small_objects(binary, min_size=min_size)
-    binary = remove_small_holes(binary, area_threshold=area_threshold)
-
+    if area_threshold > 0:
+        binary = remove_small_holes(binary, area_threshold=area_threshold)
+        
     return binary

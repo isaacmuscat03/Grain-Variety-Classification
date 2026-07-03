@@ -150,26 +150,14 @@ def load_data():
     return train_files, valid_files, test_files, files_split
 
 def load_cube(path, verbose=False):
+    with h5py.File(path, "r") as f:
+        hcube = np.array(f["hypercube"][:,:,:]) / 10000
+        darkref = np.array(f["dark_reference"]) / 10000
+        whiteref = np.array(f["white_reference"]) / 10000
+        wlens = f["hypercube"].attrs["wavelength_nm"]
 
-    with h5py.File(path, 'r') as f:
-        f = h5py.File(path)
-
-        if verbose:
-            print("What is inside an h5 file?\n")
-            for key in f.keys(): print(f"key:'{key}', \nin which there is '{f[key]}' \
-            \nwhich we load in a numpy array of shape: {np.array(f[key]).shape}\n");
-        
-            print(f"Selected to load cube from file:\n{path}")
-
-        hcube = np.array(f['hypercube'][:,:,:])/10000  
-        darkref = np.array(f['dark_reference'])/10000 
-        whiteref = np.array(f['white_reference'])/10000
-       
-    
-        hcube = np.swapaxes(hcube,-1,0).astype('float32')
+        hcube = np.swapaxes(hcube, -1, 0).astype("float32")
         hcube = np.fliplr(hcube)
-       
-        wlens = f['hypercube'].attrs['wavelength_nm']
 
     return hcube, wlens, darkref, whiteref
     
@@ -194,54 +182,6 @@ def visualize_hcube_FX10(path_FX10):
     plt.tight_layout()
     plt.show()
 
-def calibrate_reflectance(hcube_raw, darkref, whiteref, eps=1e-6):
-    H, W, B = hcube_raw.shape
-
-    def _prepare(ref):
-        if ref is None:
-            return 0.0
-
-        ref = np.asarray(ref)
-
-        # Case 1: per-band vector (B,)
-        if ref.ndim == 1:
-            if ref.shape[0] != B:
-                raise ValueError(f"1D ref length {ref.shape[0]} != n_bands {B}")
-            return ref.reshape(1, 1, B)
-
-        # Case 2: full cube already (H, W, B)
-        if ref.ndim == 3:
-            if ref.shape == (H, W, B):
-                return ref
-            if ref.shape == (1, W, B):
-                return ref
-            raise ValueError(f"3D ref shape {ref.shape} not compatible with cube {hcube_raw.shape}")
-
-        # Case 3: 2D references
-        if ref.ndim == 2:
-            # (B, W) -> (1, W, B)
-            if ref.shape == (B, W):
-                ref2 = ref.T[None, :, :]      # (1, W, B)
-                return ref2
-            # (H, W) -> (H, W, 1)
-            if ref.shape == (H, W):
-                return ref[:, :, None]
-
-            raise ValueError(f"2D ref shape {ref.shape} not compatible with cube {hcube_raw.shape}")
-
-        raise ValueError(f"Unsupported ref ndim={ref.ndim} and shape={ref.shape}")
-
-    dark = _prepare(darkref)
-    white = _prepare(whiteref)
-
-    num = hcube_raw - dark
-    denom = white - dark
-
-    R = num / (denom + eps)
-    R = np.clip(R, 0, 1)
-
-    return R
-
 def make_rgb(hcube, band_ids=(60, 108, 163)):
     H, W, B = hcube.shape
     rgb = np.zeros((H, W, 3), dtype=np.float32)
@@ -253,6 +193,100 @@ def make_rgb(hcube, band_ids=(60, 108, 163)):
 
     return rgb
 
+def get_mask_params(size, true_label=None):
+    # Default fallback
+    params = dict(
+        sigma=250,
+        med_size=3,
+        closing_radius=0,
+        opening_radius=0,
+        erosion=0,
+        bin_iterations=2,
+        min_size=1,
+        area_threshold=0
+    )
+
+    # Large grains
+    if size == "l":
+        params.update(
+            sigma=180,
+            med_size=3,
+            closing_radius=5,
+            opening_radius=0,
+            erosion=0,
+            bin_iterations=4,
+            min_size=1,
+            area_threshold=30
+        )
+
+        if true_label == "corn":
+            params.update(
+                sigma=170,
+                closing_radius=7,
+                bin_iterations=6,
+                area_threshold=1
+            )
+
+        elif true_label == "flax":
+            params.update(
+                sigma=250,
+                closing_radius=7,
+                opening_radius=2,
+                bin_iterations=3,
+                min_size=40,
+                area_threshold=140,
+                use_clahe=True,
+                clahe_clip=0.02
+            )
+
+    # Medium grains
+    elif size == "m":
+        params.update(
+            sigma=250,
+            med_size=3,
+            closing_radius=1,
+            opening_radius=2,
+            erosion=0,
+            bin_iterations=1,
+            min_size=1,
+            area_threshold=0
+        )
+
+        if true_label == "flax":
+            params.update(
+                closing_radius=7,
+                opening_radius=2,
+                bin_iterations=3,
+                min_size=40,
+                area_threshold=120,
+                use_clahe=True,
+                clahe_clip=0.02
+            )
+
+    # Small grains
+    elif size == "s":
+        if true_label == "flax":
+            params.update(
+                sigma=250,
+                med_size=3,
+                closing_radius=3,
+                opening_radius=0,
+                erosion=0,
+                bin_iterations=3,
+                min_size=1,
+                area_threshold=0
+            )
+
+    return params
+
+
+def build_foreground_mask_auto(hcube, size, true_label=None):
+    mask_params = get_mask_params(size=size, true_label=true_label)
+
+    return build_foreground_mask(
+        hcube,
+        **mask_params
+    )
 
 def build_foreground_mask(
     hcube,

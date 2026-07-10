@@ -4,6 +4,7 @@ import subprocess, os
 import h5py
 import numpy as np
 import random
+import itertools
 import matplotlib.pyplot as plt
 from skimage.filters import threshold_otsu
 from scipy import ndimage as ndi
@@ -12,76 +13,323 @@ from scipy.ndimage import gaussian_filter, binary_dilation
 from scipy.ndimage import median_filter
 from skimage import exposure
 
-def load_data():
-    # Mounting dataset from D: to WSL 
-    WINDOWS_DRIVE = "E:"   
-    WINDOWS_PATH = r"E:\HSI_Dataset_2\Elements\data"
-    LINK_NAME     = "data_external"  
+def load_data(
+    mode="wsl",
+    dataset_path=None,
+    windows_drive="E:",
+    windows_path=r"E:\HSI_Dataset_2\Elements\data",
+    link_name="data_external",
+    varieties=("barley", "corn", "flax"),
+):
 
-    # Mount drive if missing
-    mnt_path = Path(f"/mnt/{WINDOWS_DRIVE[0].lower()}")
+    valid_modes = {"wsl", "direct"}
 
-    print(f" Mounting {WINDOWS_DRIVE} into {mnt_path} ...")
-    subprocess.run(["sudo", "mkdir", "-p", str(mnt_path)], check=True)
-    res = subprocess.run(["sudo", "mount", "-t", "drvfs", WINDOWS_DRIVE, str(mnt_path)], capture_output=True, text=True)
-    if res.returncode != 0:
-        raise RuntimeError(f"Failed to mount {WINDOWS_DRIVE}: {res.stderr}")
+    if mode not in valid_modes:
+        raise ValueError(
+            f"mode must be one of {sorted(valid_modes)}, got {mode!r}."
+        )
 
-    # Verify dataset path 
-    dataset_path = Path(str(WINDOWS_PATH).replace("\\", "/").replace(":", "").replace("E", "/mnt/e", 1))
-    if not dataset_path.exists():
-        print(f"ERROR: Dataset not found at {dataset_path}. Let's check what's under /mnt/e:")
-        os.system("ls -la /mnt/d")
-        raise FileNotFoundError("Fix dataset path above and rerun.")
-    print(f"[OK] Found dataset: {dataset_path}")
+    # Original WSL workflow
+    if mode == "wsl":
+        mount_path = Path(
+            f"/mnt/{windows_drive[0].lower()}"
+        )
 
-    # Create symlink inside project
-    proj_root = Path.cwd()
-    link_path = proj_root / LINK_NAME
-    if link_path.exists() or link_path.is_symlink():
-        print(f" Removing old link {link_path}")
-        link_path.unlink()
-    link_path.symlink_to(dataset_path, target_is_directory=True)
-    print(f"[OK] Linked {link_path} -> {dataset_path}")
+        print(
+            f"Mounting {windows_drive} into {mount_path} ..."
+        )
 
-    # Show a few sample files for confirmation
-    import itertools
-    exts = {".hdf5", ".h5", ".hdr", ".tif", ".tiff"}
-    found = list(itertools.islice((p for p in link_path.rglob("*") if p.suffix.lower() in exts), 10))
-    if found:
-        print("Sample files:")
-        for f in found: print("  ", f.relative_to(link_path))
+        subprocess.run(
+            ["sudo", "mkdir", "-p", str(mount_path)],
+            check=True,
+        )
+
+        mount_result = subprocess.run(
+            [
+                "sudo",
+                "mount",
+                "-t",
+                "drvfs",
+                windows_drive,
+                str(mount_path),
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+        if mount_result.returncode != 0:
+            error_message = mount_result.stderr.strip()
+
+
+            already_mounted = (
+                "already mounted" in error_message.lower()
+                or "mount point is busy" in error_message.lower()
+            )
+
+            if not already_mounted:
+                raise RuntimeError(
+                    f"Failed to mount {windows_drive}: "
+                    f"{error_message}"
+                )
+
+            print(
+                f"[OK] {windows_drive} appears to be already mounted."
+            )
+
+        # Convert:
+        # E:\HSI_Dataset_2\Elements\data
+        # into:
+        # /mnt/e/HSI_Dataset_2/Elements/data
+        drive_prefix = windows_drive.rstrip(":")
+
+        normalized_windows_path = (
+            str(windows_path)
+            .replace("\\", "/")
+        )
+
+        if not normalized_windows_path.lower().startswith(
+            drive_prefix.lower() + ":"
+        ):
+            raise ValueError(
+                "windows_path does not begin with windows_drive:\n"
+                f"windows_drive={windows_drive!r}\n"
+                f"windows_path={windows_path!r}"
+            )
+
+        relative_windows_path = (
+            normalized_windows_path
+            .split(":", 1)[1]
+            .lstrip("/")
+        )
+
+        resolved_dataset_path = (
+            mount_path / relative_windows_path
+        )
+
+        if not resolved_dataset_path.exists():
+            print(
+                f"ERROR: Dataset not found at "
+                f"{resolved_dataset_path}."
+            )
+            print(
+                f"Contents currently visible under {mount_path}:"
+            )
+
+            os.system(f'ls -la "{mount_path}"')
+
+            raise FileNotFoundError(
+                "Fix windows_drive/windows_path and rerun."
+            )
+
+        print(
+            f"[OK] Found dataset: {resolved_dataset_path}"
+        )
+
+        project_root = Path.cwd()
+        link_path = project_root / link_name
+
+        if link_path.exists() or link_path.is_symlink():
+            print(f"Removing old link {link_path}")
+
+            if link_path.is_symlink() or link_path.is_file():
+                link_path.unlink()
+            elif link_path.is_dir():
+                raise IsADirectoryError(
+                    f"{link_path} is a real directory rather than "
+                    "a symlink. It was not removed automatically."
+                )
+
+        link_path.symlink_to(
+            resolved_dataset_path,
+            target_is_directory=True,
+        )
+
+        print(
+            f"[OK] Linked {link_path} -> "
+            f"{resolved_dataset_path}"
+        )
+
+        extensions = {
+            ".hdf5",
+            ".h5",
+            ".hdr",
+            ".tif",
+            ".tiff",
+        }
+
+        found_examples = list(
+            itertools.islice(
+                (
+                    path
+                    for path in link_path.rglob("*")
+                    if path.suffix.lower() in extensions
+                ),
+                10,
+            )
+        )
+
+        if found_examples:
+            print("Sample files:")
+
+            for filepath in found_examples:
+                print(
+                    "  ",
+                    filepath.relative_to(link_path),
+                )
+        else:
+            print(
+                "No .hdf5/.h5/.hdr/.tif files found yet — "
+                "check deeper folders."
+            )
+
+        root = Path(link_name)
+        hr_root = root / "raw" / "FX10"
+
+        outdir = (
+            hr_root.parent.parent
+            / "processed"
+            / "quickrun"
+        )
+
+        outdir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+    # direct/local workflow
     else:
-        print("No .hdf5/.h5/.hdr/.tif files found yet — check deeper folders.")
+        if dataset_path is None:
+            raise ValueError(
+                "dataset_path must be provided when mode='direct'."
+            )
 
-    ROOT = Path("data_external")  
-    HR_ROOT = ROOT / "raw" / "FX10" 
+        resolved_dataset_path = (
+            Path(dataset_path)
+            .expanduser()
+            .resolve()
+        )
 
-    OUTDIR = HR_ROOT.parent.parent / "processed" / "quickrun"  
-    OUTDIR.mkdir(parents=True, exist_ok=True)
+        if not resolved_dataset_path.exists():
+            raise FileNotFoundError(
+                "Dataset not found at:\n"
+                f"{resolved_dataset_path}"
+            )
 
-    print("ROOT:    ", ROOT.resolve())
-    print("Basepath:", HR_ROOT.resolve())
-    print("OUTDIR:  ", OUTDIR.resolve())
+        if not resolved_dataset_path.is_dir():
+            raise NotADirectoryError(
+                "dataset_path is not a directory:\n"
+                f"{resolved_dataset_path}"
+            )
 
-    ## Look for all files in the folder that end with .hdf5 
-    df = pd.DataFrame({"filepath_FX10": list(Path(f"{HR_ROOT}").rglob("**/*.hdf5"))})
-    ## Give the sample name 
-    df['sample_name'] = df.filepath_FX10.apply(lambda x : x.stem)
-    df
+        print(
+            f"[OK] Found dataset: {resolved_dataset_path}"
+        )
 
-    # find all .hdf5 files
-    all_files = list(HR_ROOT.rglob("*.hdf5"))
-    print("Total .hdf5 files found:", len(all_files))
+        # The direct path itself replaces data_external.
+        root = resolved_dataset_path
+        hr_root = root / "raw" / "FX10"
 
-    df_files = pd.DataFrame({"filepath_FX10": all_files})
-    df_files["sample_name"] = df_files["filepath_FX10"].apply(lambda p: p.stem)
+        # Keep the same derived output-directory behaviour.
+        outdir = (
+            hr_root.parent.parent
+            / "processed"
+            / "quickrun"
+        )
 
+        outdir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
-    def resolve_valid_hdf5(path: Path) -> Path | None:
+        extensions = {
+            ".hdf5",
+            ".h5",
+            ".hdr",
+            ".tif",
+            ".tiff",
+        }
+
+        found_examples = list(
+            itertools.islice(
+                (
+                    path
+                    for path in root.rglob("*")
+                    if path.suffix.lower() in extensions
+                ),
+                10,
+            )
+        )
+
+        if found_examples:
+            print("Sample files:")
+
+            for filepath in found_examples:
+                try:
+                    shown_path = filepath.relative_to(root)
+                except ValueError:
+                    shown_path = filepath
+
+                print("  ", shown_path)
+        else:
+            print(
+                "No .hdf5/.h5/.hdr/.tif files found yet — "
+                "check dataset_path."
+            )
+
+    # Shared original loading/splitting functionality
+    print("ROOT:    ", root.resolve())
+    print("Basepath:", hr_root.resolve())
+    print("OUTDIR:  ", outdir.resolve())
+
+    if not hr_root.exists():
+        raise FileNotFoundError(
+            "Expected FX10 folder was not found:\n"
+            f"{hr_root}\n\n"
+            "The supplied dataset root must contain raw/FX10."
+        )
+
+    # Preserve the original preliminary DataFrame creation
+    df = pd.DataFrame(
+        {
+            "filepath_FX10": list(
+                Path(f"{hr_root}").rglob("**/*.hdf5")
+            )
+        }
+    )
+
+    df["sample_name"] = df["filepath_FX10"].apply(
+        lambda path: path.stem
+    )
+
+    # Find all .hdf5 files
+    all_files = list(
+        hr_root.rglob("*.hdf5")
+    )
+
+    print(
+        "Total .hdf5 files found:",
+        len(all_files),
+    )
+
+    if len(all_files) == 0:
+        raise FileNotFoundError(
+            "No .hdf5 files were found under:\n"
+            f"{hr_root}"
+        )
+
+    df_files = pd.DataFrame(
+        {"filepath_FX10": all_files}
+    )
+
+    df_files["sample_name"] = (
+        df_files["filepath_FX10"]
+        .apply(lambda path: path.stem)
+    )
+
+    def resolve_valid_hdf5(path):
         """
-        Returns:
-            - Path to a valid file or None if it fails
+        Return a Path when the file is readable as HDF5,
+        otherwise return None.
         """
         path = Path(path)
 
@@ -91,63 +339,151 @@ def load_data():
         except Exception:
             return None
 
-    df_files["resolved_path"] = df_files["filepath_FX10"].apply(resolve_valid_hdf5)
+    df_files["resolved_path"] = (
+        df_files["filepath_FX10"]
+        .apply(resolve_valid_hdf5)
+    )
 
-    df_valid = df_files[df_files["resolved_path"].notna()].copy()
-    df_invalid = df_files[df_files["resolved_path"].isna()].copy()
+    df_valid = df_files[
+        df_files["resolved_path"].notna()
+    ].copy()
 
-    print("Valid HDF5 files:", len(df_valid))
-    print("Invalid/unreadable files:", len(df_invalid))
+    df_invalid = df_files[
+        df_files["resolved_path"].isna()
+    ].copy()
+
+    print(
+        "Valid HDF5 files:",
+        len(df_valid),
+    )
+
+    print(
+        "Invalid/unreadable files:",
+        len(df_invalid),
+    )
 
     if not df_invalid.empty:
         print("\nUnreadable sample_names:")
-        print(df_invalid["sample_name"].tolist())
+        print(
+            df_invalid["sample_name"].tolist()
+        )
 
-    # --- Create image-level train/valid/test split ---
+    if df_valid.empty:
+        raise RuntimeError(
+            "No valid HDF5 files were found."
+        )
 
-    df_valid = df_valid.copy()
+    # Create image-level train/valid/test split
+    df_valid["variety"] = (
+        df_valid["sample_name"]
+        .str.split("_")
+        .str[0]
+    )
 
-    df_valid["variety"] = df_valid["sample_name"].str.split("_").str[0]
-    df_valid["batch"]   = df_valid["sample_name"].str.split("_").str[-1]
+    df_valid["batch"] = (
+        df_valid["sample_name"]
+        .str.split("_")
+        .str[-1]
+    )
 
-    df_valid["size"] = df_valid["batch"].str[0]
-    df_valid["rep"]  = df_valid["batch"].str[1:].astype(int)
+    df_valid["size"] = (
+        df_valid["batch"].str[0]
+    )
 
-    varieties = ["barley", "corn", "flax"]
+    df_valid["rep"] = pd.to_numeric(
+        df_valid["batch"].str[1:],
+        errors="raise",
+    ).astype(int)
 
-    df_valid = df_valid[df_valid["variety"].isin(varieties)].copy()
+    varieties = list(varieties)
+
+    df_valid = df_valid[
+        df_valid["variety"].isin(varieties)
+    ].copy()
 
     def assign_split(group):
         group = group.sort_values("rep").copy()
 
         if len(group) != 5:
-            print("Warning: expected 5 images, got", len(group), "for", group[["variety", "size"]].iloc[0].to_dict())
+            print(
+                "Warning: expected 5 images, got",
+                len(group),
+                "for",
+                group[
+                    ["variety", "size"]
+                ].iloc[0].to_dict(),
+            )
 
         group["split"] = "unused"
-        group.iloc[:3, group.columns.get_loc("split")] = "train"
-        group.iloc[3:4, group.columns.get_loc("split")] = "valid"
-        group.iloc[4:5, group.columns.get_loc("split")] = "test"
+
+        group.iloc[
+            :3,
+            group.columns.get_loc("split"),
+        ] = "train"
+
+        group.iloc[
+            3:4,
+            group.columns.get_loc("split"),
+        ] = "valid"
+
+        group.iloc[
+            4:5,
+            group.columns.get_loc("split"),
+        ] = "test"
 
         return group
 
     files_split = (
         df_valid
-        .groupby(["variety", "size"], group_keys=False)
+        .groupby(
+            ["variety", "size"],
+            group_keys=False,
+        )
         .apply(assign_split)
         .reset_index(drop=True)
     )
 
-    train_files = files_split[files_split["split"] == "train"].copy()
-    valid_files = files_split[files_split["split"] == "valid"].copy()
-    test_files  = files_split[files_split["split"] == "test"].copy()
+    train_files = files_split[
+        files_split["split"] == "train"
+    ].copy()
 
-    train_files.loc[:, 'variety'] = train_files['sample_name'].str.split("_").str[0]
-    train_files.loc[:, 'batch']   = train_files['sample_name'].str.split("_").str[-1]
+    valid_files = files_split[
+        files_split["split"] == "valid"
+    ].copy()
 
-    train_files.loc[:, 'size'] = train_files['batch'].str[0]          
-    train_files.loc[:, 'rep']  = train_files['batch'].str[1:].astype(int)   
+    test_files = files_split[
+        files_split["split"] == "test"
+    ].copy()
 
-    return train_files, valid_files, test_files, files_split
+    # Preserve the original final train metadata assignments
+    train_files.loc[:, "variety"] = (
+        train_files["sample_name"]
+        .str.split("_")
+        .str[0]
+    )
+
+    train_files.loc[:, "batch"] = (
+        train_files["sample_name"]
+        .str.split("_")
+        .str[-1]
+    )
+
+    train_files.loc[:, "size"] = (
+        train_files["batch"].str[0]
+    )
+
+    train_files.loc[:, "rep"] = (
+        train_files["batch"]
+        .str[1:]
+        .astype(int)
+    )
+
+    return (
+        train_files,
+        valid_files,
+        test_files,
+        files_split,
+    )
 
 def load_cube(path, verbose=False):
     with h5py.File(path, "r") as f:

@@ -29,6 +29,56 @@ def load_data(
             f"mode must be one of {sorted(valid_modes)}, got {mode!r}."
         )
 
+    def resolve_hdf5_directory(dataset_root):
+        """
+        Support both dataset layouts:
+
+        Nested/original:
+            dataset_root/raw/FX10/*.hdf5
+
+        Flat/Desktop:
+            dataset_root/*.hdf5
+        """
+        dataset_root = Path(dataset_root)
+
+        nested_fx10 = (
+            dataset_root
+            / "raw"
+            / "FX10"
+        )
+
+        # Original E: dataset structure
+        if nested_fx10.is_dir():
+
+            print(
+                "[OK] Detected nested dataset layout: "
+                "raw/FX10"
+            )
+
+            return nested_fx10
+
+        # New Desktop dataset structure
+        direct_hdf5_files = list(
+            dataset_root.glob("*.hdf5")
+        )
+
+        if direct_hdf5_files:
+
+            print(
+                "[OK] Detected flat dataset layout: "
+                "HDF5 files are directly inside the dataset folder"
+            )
+
+            return dataset_root
+
+        raise FileNotFoundError(
+            "No supported HSI dataset structure was found.\n\n"
+            "Expected either:\n"
+            f"  {nested_fx10}\n"
+            "or HDF5 files directly inside:\n"
+            f"  {dataset_root}"
+        )
+
     # Original WSL workflow
     if mode == "wsl":
         mount_path = Path(
@@ -183,10 +233,13 @@ def load_data(
             )
 
         root = Path(link_name)
-        hr_root = root / "raw" / "FX10"
+
+        hr_root = resolve_hdf5_directory(
+            root
+        )
 
         outdir = (
-            hr_root.parent.parent
+            root
             / "processed"
             / "quickrun"
         )
@@ -227,11 +280,13 @@ def load_data(
 
         # The direct path itself replaces data_external.
         root = resolved_dataset_path
-        hr_root = root / "raw" / "FX10"
 
-        # Keep the same derived output-directory behaviour.
+        hr_root = resolve_hdf5_directory(
+            root
+        )
+
         outdir = (
-            hr_root.parent.parent
+            root
             / "processed"
             / "quickrun"
         )
@@ -283,9 +338,8 @@ def load_data(
 
     if not hr_root.exists():
         raise FileNotFoundError(
-            "Expected FX10 folder was not found:\n"
-            f"{hr_root}\n\n"
-            "The supplied dataset root must contain raw/FX10."
+            "Resolved HDF5 directory does not exist:\n"
+            f"{hr_root}"
         )
 
     # Preserve the original preliminary DataFrame creation
@@ -484,7 +538,7 @@ def load_data(
         test_files,
         files_split,
     )
-
+ 
 def load_cube(path, verbose=False):
     with h5py.File(path, "r") as f:
         hcube = np.array(f["hypercube"][:,:,:]) / 10000

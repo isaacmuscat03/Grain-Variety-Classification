@@ -1,0 +1,6 @@
+experiment,correct_images,total_images,image_accuracy,image_balanced_accuracy,image_macro_f1,accuracy_ci_low,accuracy_ci_high,tile_accuracy,tile_balanced_accuracy,tile_macro_f1
+PCA 1-band CNN,9,9,1.0,1.0,1.0,0.7008472464490407,1.0,1.0,1.0,1.0
+VIP 1-band CNN,9,9,1.0,1.0,1.0,0.7008472464490407,1.0,1.0,1.0,1.0
+PCA 3-band CNN,9,9,1.0,1.0,1.0,0.7008472464490407,1.0,1.0,1.0,1.0
+VIP 3-band CNN,9,9,1.0,1.0,1.0,0.7008472464490407,1.0,1.0,1.0,1.0
+RGB 3-band CNN,9,9,1.0,1.0,1.0,0.7008472464490407,1.0,1.0,1.0,1.0

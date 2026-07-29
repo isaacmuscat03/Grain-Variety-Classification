@@ -1,0 +1,6 @@
+experiment,test_tile_accuracy,test_tile_balanced_accuracy,test_tile_macro_f1,test_image_accuracy,test_image_balanced_accuracy,test_image_macro_f1
+PCA 1-band CNN,1.0,1.0,1.0,1.0,1.0,1.0
+VIP 1-band CNN,1.0,1.0,1.0,1.0,1.0,1.0
+PCA 3-band CNN,1.0,1.0,1.0,1.0,1.0,1.0
+VIP 3-band CNN,1.0,1.0,1.0,1.0,1.0,1.0
+RGB 3-band CNN,1.0,1.0,1.0,1.0,1.0,1.0

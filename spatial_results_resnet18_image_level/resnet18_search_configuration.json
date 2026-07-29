@@ -1,0 +1,20 @@
+{
+  "input_mode": "image",
+  "standardisation": "training_channel_mean_and_std",
+  "label_smoothing": 0.05,
+  "transfer_learning": "frozen_imagenet_backbone",
+  "trainable_parameters": "classifier_head_only",
+  "max_epochs": 100,
+  "patience": 10,
+  "loss_level": "tile",
+  "aggregation": "majority_vote",
+  "tie_break": "mean_class_probability",
+  "tiles_per_image": 16,
+  "selection_primary": "validation_tile_loss",
+  "selection_tiebreakers": [
+    "validation_image_balanced_accuracy",
+    "validation_image_macro_f1",
+    "earlier_best_epoch"
+  ],
+  "n_candidates": 24
+}

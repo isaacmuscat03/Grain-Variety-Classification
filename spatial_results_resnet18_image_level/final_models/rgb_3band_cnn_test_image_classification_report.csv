@@ -1,0 +1,7 @@
+,precision,recall,f1-score,support
+barley,1.0,1.0,1.0,3.0
+corn,1.0,1.0,1.0,3.0
+flax,1.0,1.0,1.0,3.0
+accuracy,1.0,1.0,1.0,1.0
+macro avg,1.0,1.0,1.0,9.0
+weighted avg,1.0,1.0,1.0,9.0

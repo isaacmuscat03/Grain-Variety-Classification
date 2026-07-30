@@ -1,0 +1,6 @@
+method,requested_bands_nm,n_external_scenes,tiles_per_external_scene,external_tile_height,external_tile_width,n_predicted_corn,corn_recognition_rate,mean_corn_probability,median_corn_probability,predicted_barley_count,predicted_corn_count,predicted_flax_count,predicted_barley_fraction,predicted_corn_fraction,predicted_flax_fraction
+PCA 1-band CNN,[491.9],23,4,220,180,2,0.08695652173913043,0.20948563649703536,0.25,0,2,21,0.0,0.08695652173913043,0.9130434782608695
+VIP 1-band CNN,[497.2],23,4,220,180,16,0.6956521739130435,0.6004171397375024,0.5057284235954285,0,16,7,0.0,0.6956521739130435,0.30434782608695654
+PCA 3-band CNN,"[491.9, 611.9, 641.6]",23,4,220,180,23,1.0,1.0,1.0,0,23,0,0.0,1.0,0.0
+VIP 3-band CNN,"[497.2, 609.2, 641.6]",23,4,220,180,23,1.0,1.0,1.0,0,23,0,0.0,1.0,0.0
+RGB 3-band CNN,"[650.0, 530.0, 450.0]",23,4,220,180,23,1.0,1.0,1.0,0,23,0,0.0,1.0,0.0

@@ -1,0 +1,6 @@
+architecture,diagnostic,condition,experiment,blur_sigma_pixels,n_test_images,changed_image_predictions,changed_image_fraction,test_image_accuracy,test_image_balanced_accuracy,test_image_macro_f1,test_tile_accuracy,test_tile_balanced_accuracy,test_tile_macro_f1
+resnet18,whole_image_spatial_blur,clean,PCA 1-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,whole_image_spatial_blur,moderate_blur,PCA 1-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,whole_image_spatial_blur,considerable_blur,PCA 1-band CNN,3.5,9,5,0.5555555555555556,0.4444444444444444,0.4444444444444444,0.34848484848484845,0.5416666666666666,0.5416666666666666,0.4763368019181973
+resnet18,whole_image_spatial_blur,strong_blur,PCA 1-band CNN,5.0,9,6,0.6666666666666666,0.3333333333333333,0.3333333333333333,0.16666666666666666,0.3333333333333333,0.3333333333333333,0.16666666666666666
+resnet18,whole_image_spatial_blur,very_strong_blur,PCA 1-band CNN,10.0,9,6,0.6666666666666666,0.3333333333333333,0.3333333333333333,0.16666666666666666,0.3333333333333333,0.3333333333333333,0.16666666666666666

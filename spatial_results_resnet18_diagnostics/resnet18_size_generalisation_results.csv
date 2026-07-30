@@ -1,0 +1,6 @@
+architecture,diagnostic,condition,experiment,contamination_rate,incorrect_training_labels,train_sizes,validation_sizes,test_sizes,validation_repetition,n_train_images,n_valid_images,n_test_images,best_epoch,validation_image_accuracy,validation_image_balanced_accuracy,validation_image_macro_f1,validation_tile_accuracy,validation_tile_balanced_accuracy,validation_tile_macro_f1,test_image_accuracy,test_image_balanced_accuracy,test_image_macro_f1,test_tile_accuracy,test_tile_balanced_accuracy,test_tile_macro_f1
+resnet18,size_generalisation,train_small_large_test_medium,PCA 1-band CNN,0.0,0,small_large,small_large,medium,3,24,6,15,91,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,size_generalisation,train_small_large_test_medium,VIP 1-band CNN,0.0,0,small_large,small_large,medium,3,24,6,15,91,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,size_generalisation,train_small_large_test_medium,PCA 3-band CNN,0.0,0,small_large,small_large,medium,3,24,6,15,62,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,size_generalisation,train_small_large_test_medium,VIP 3-band CNN,0.0,0,small_large,small_large,medium,3,24,6,15,69,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+resnet18,size_generalisation,train_small_large_test_medium,RGB 3-band CNN,0.0,0,small_large,small_large,medium,3,24,6,15,71,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

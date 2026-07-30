@@ -1,0 +1,24 @@
+scene_index,sample_name,external_variety,lines,samples,bands,interleave,data_type_code,minimum_wavelength_nm,maximum_wavelength_nm,large_enough_for_fixed_tiles
+0,Caitiannuo No.6__1,Caitiannuo No.6,529,480,300,bil,4,386.48999,1020.179993,True
+1,Caitiannuo No.6__2,Caitiannuo No.6,539,480,300,bil,4,386.48999,1020.179993,True
+2,Jinxitian__1,Jinxitian,526,480,300,bil,4,386.48999,1020.179993,True
+3,Jinxitian__2,Jinxitian,514,480,300,bil,4,386.48999,1020.179993,True
+4,Mihuatiannuo No.3__1,Mihuatiannuo No.3,522,480,300,bil,4,386.48999,1020.179993,True
+5,Mihuatiannuo No.3__2,Mihuatiannuo No.3,516,480,300,bil,4,386.48999,1020.179993,True
+6,Mitiannuo No.1__1,Mitiannuo No.1,539,480,300,bil,4,386.48999,1020.179993,True
+7,Mitiannuo No.1__2,Mitiannuo No.1,542,480,300,bil,4,386.48999,1020.179993,True
+8,Mitiannuo No.4__1,Mitiannuo No.4,554,480,300,bil,4,386.48999,1020.179993,True
+9,Mitiannuo No.4__2,Mitiannuo No.4,534,480,300,bil,4,386.48999,1020.179993,True
+10,Sida No.204__1,Sida No.204,560,480,300,bil,4,386.48999,1020.179993,True
+11,Sida No.204__2,Sida No.204,552,480,300,bil,4,386.48999,1020.179993,True
+12,Sidanuo No.38__1,Sidanuo No.38,535,480,300,bil,4,386.48999,1020.179993,True
+13,Sidanuo No.38__2,Sidanuo No.38,536,480,300,bil,4,386.48999,1020.179993,True
+14,Sidanuo No.44__1,Sidanuo No.44,534,480,300,bil,4,386.48999,1020.179993,True
+15,Sidanuo No.44__2,Sidanuo No.44,531,480,300,bil,4,386.48999,1020.179993,True
+16,Yuecainuo No.2__1,Yuecainuo No.2,536,480,300,bil,4,386.48999,1020.179993,True
+17,Yuecainuo No.2__2,Yuecainuo No.2,533,480,300,bil,4,386.48999,1020.179993,True
+18,Zhenzhunuo No.8__1,Zhenzhunuo No.8,533,480,300,bil,4,386.48999,1020.179993,True
+19,Zhenzhunuo No.8__2,Zhenzhunuo No.8,546,480,300,bil,4,386.48999,1020.179993,True
+20,Zhuyunuo No.1__1,Zhuyunuo No.1,542,480,300,bil,4,386.48999,1020.179993,True
+21,Zhuyunuo No.1__2,Zhuyunuo No.1,545,480,300,bil,4,386.48999,1020.179993,True
+22,Zhuyutian No.1__1,Zhuyutian No.1,527,480,300,bil,4,386.48999,1020.179993,True

@@ -1,0 +1,93 @@
+sample_name,tile_index,true_class,predicted_class,correct,probability_barley,probability_corn,probability_flax,predicted_class_index,true_class_index
+Caitiannuo No.6__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.4__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__1,3,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__2,0,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__2,1,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__2,3,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyutian No.1__1,0,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyutian No.1__1,1,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyutian No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyutian No.1__1,3,corn,corn,True,0.0,1.0,0.0,1,1

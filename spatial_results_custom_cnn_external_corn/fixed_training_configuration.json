@@ -1,0 +1,14 @@
+{
+  "configuration_source": "/data/r1032016/Grain-Variety-Classification/spatial_results_custom_cnn_mil/tuning/selected_custom_cnn_tile_configurations.csv",
+  "selection_dataset": "original_validation_set",
+  "external_data_used_for_selection": false,
+  "input_mode": "image",
+  "standardisation": "original_training_channel_mean_and_std",
+  "label_smoothing": 0.05,
+  "max_epochs": 100,
+  "patience": 10,
+  "loss_level": "tile",
+  "aggregation": "majority_vote",
+  "tie_break": "mean_class_probability",
+  "training_tiles_per_image": 16
+}

@@ -1,0 +1,6 @@
+architecture,diagnostic,condition,experiment,blur_sigma_pixels,n_test_images,changed_image_predictions,changed_image_fraction,test_image_accuracy,test_image_balanced_accuracy,test_image_macro_f1,test_tile_accuracy,test_tile_balanced_accuracy,test_tile_macro_f1
+custom_cnn,whole_image_spatial_blur,clean,VIP 3-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,VIP 3-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,considerable_blur,VIP 3-band CNN,3.5,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,strong_blur,VIP 3-band CNN,5.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,very_strong_blur,VIP 3-band CNN,10.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337

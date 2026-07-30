@@ -1,0 +1,26 @@
+architecture,diagnostic,condition,experiment,blur_sigma_pixels,n_test_images,changed_image_predictions,changed_image_fraction,test_image_accuracy,test_image_balanced_accuracy,test_image_macro_f1,test_tile_accuracy,test_tile_balanced_accuracy,test_tile_macro_f1
+custom_cnn,whole_image_spatial_blur,clean,PCA 1-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,PCA 1-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,considerable_blur,PCA 1-band CNN,3.5,9,0,0.0,1.0,1.0,1.0,0.8402777777777778,0.8402777777777778,0.843542804327118
+custom_cnn,whole_image_spatial_blur,strong_blur,PCA 1-band CNN,5.0,9,4,0.4444444444444444,0.5555555555555556,0.5555555555555555,0.4666666666666666,0.5555555555555556,0.5555555555555555,0.4666666666666666
+custom_cnn,whole_image_spatial_blur,very_strong_blur,PCA 1-band CNN,10.0,9,4,0.4444444444444444,0.5555555555555556,0.5555555555555555,0.4666666666666666,0.5416666666666666,0.5416666666666666,0.45394112060778724
+custom_cnn,whole_image_spatial_blur,clean,VIP 1-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,VIP 1-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,considerable_blur,VIP 1-band CNN,3.5,9,2,0.2222222222222222,0.7777777777777778,0.7777777777777778,0.75,0.7916666666666666,0.7916666666666666,0.7873015873015873
+custom_cnn,whole_image_spatial_blur,strong_blur,VIP 1-band CNN,5.0,9,4,0.4444444444444444,0.5555555555555556,0.5555555555555555,0.4666666666666666,0.5486111111111112,0.5486111111111112,0.46036113950258145
+custom_cnn,whole_image_spatial_blur,very_strong_blur,VIP 1-band CNN,10.0,9,4,0.4444444444444444,0.5555555555555556,0.5555555555555555,0.4666666666666666,0.5416666666666666,0.5416666666666666,0.45394112060778724
+custom_cnn,whole_image_spatial_blur,clean,PCA 3-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,PCA 3-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,considerable_blur,PCA 3-band CNN,3.5,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,strong_blur,PCA 3-band CNN,5.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,very_strong_blur,PCA 3-band CNN,10.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,clean,VIP 3-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,VIP 3-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,considerable_blur,VIP 3-band CNN,3.5,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,strong_blur,VIP 3-band CNN,5.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,very_strong_blur,VIP 3-band CNN,10.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337
+custom_cnn,whole_image_spatial_blur,clean,RGB 3-band CNN,0.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,moderate_blur,RGB 3-band CNN,2.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,considerable_blur,RGB 3-band CNN,3.5,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,strong_blur,RGB 3-band CNN,5.0,9,0,0.0,1.0,1.0,1.0,1.0,1.0,1.0
+custom_cnn,whole_image_spatial_blur,very_strong_blur,RGB 3-band CNN,10.0,9,0,0.0,1.0,1.0,1.0,0.9930555555555556,0.9930555555555555,0.993054801953337

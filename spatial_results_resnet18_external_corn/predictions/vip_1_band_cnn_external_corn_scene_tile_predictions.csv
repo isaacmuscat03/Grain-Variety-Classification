@@ -1,0 +1,93 @@
+sample_name,tile_index,true_class,predicted_class,correct,probability_barley,probability_corn,probability_flax,predicted_class_index,true_class_index
+Caitiannuo No.6__1,0,corn,corn,True,0.0,0.9354687333106995,0.06453125923871994,1,1
+Caitiannuo No.6__1,1,corn,corn,True,0.0,1.0,4.457835836579882e-11,1,1
+Caitiannuo No.6__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Caitiannuo No.6__1,3,corn,corn,True,0.0,0.9852096438407898,0.014790354296565056,1,1
+Caitiannuo No.6__2,0,corn,flax,False,0.0,0.0018189707770943642,0.9981811046600342,2,1
+Caitiannuo No.6__2,1,corn,corn,True,0.0,1.0,1.227354351206777e-22,1,1
+Caitiannuo No.6__2,2,corn,corn,True,0.0,1.0,6.476801502109305e-42,1,1
+Caitiannuo No.6__2,3,corn,corn,True,0.0,1.0,3.204995760873324e-23,1,1
+Jinxitian__1,0,corn,flax,False,0.0,8.441345168459422e-28,1.0,2,1
+Jinxitian__1,1,corn,corn,True,0.0,1.0,3.5157984967781886e-08,1,1
+Jinxitian__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Jinxitian__1,3,corn,flax,False,0.0,0.0008004721603356302,0.9991995692253113,2,1
+Jinxitian__2,0,corn,flax,False,4.372051208693429e-42,2.3484778457112186e-30,1.0,2,1
+Jinxitian__2,1,corn,corn,True,0.0,1.0,1.9166957661129602e-18,1,1
+Jinxitian__2,2,corn,flax,False,0.0,0.21954135596752167,0.7804586291313171,2,1
+Jinxitian__2,3,corn,flax,False,1.2531729747686361e-35,4.479225633319804e-16,1.0,2,1
+Mihuatiannuo No.3__1,0,corn,flax,False,3.4191419488695476e-29,1.401298464324817e-45,1.0,2,1
+Mihuatiannuo No.3__1,1,corn,flax,False,0.0,4.594957317749504e-06,0.9999953508377075,2,1
+Mihuatiannuo No.3__1,2,corn,corn,True,0.0,1.0,6.048035092492885e-20,1,1
+Mihuatiannuo No.3__1,3,corn,flax,False,8.407790785948902e-45,2.7062853266762514e-26,1.0,2,1
+Mihuatiannuo No.3__2,0,corn,flax,False,0.0,3.707024237714989e-24,1.0,2,1
+Mihuatiannuo No.3__2,1,corn,corn,True,0.0,0.9947787523269653,0.005221290048211813,1,1
+Mihuatiannuo No.3__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mihuatiannuo No.3__2,3,corn,flax,False,5.519523783177346e-27,7.719149896855066e-24,1.0,2,1
+Mitiannuo No.1__1,0,corn,flax,False,0.0,4.795859042739433e-15,1.0,2,1
+Mitiannuo No.1__1,1,corn,corn,True,0.0,1.0,1.3651602417952269e-11,1,1
+Mitiannuo No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__1,3,corn,corn,True,0.0,0.9962665438652039,0.003733481280505657,1,1
+Mitiannuo No.1__2,0,corn,flax,False,0.0,4.57309612400536e-09,1.0,2,1
+Mitiannuo No.1__2,1,corn,corn,True,0.0,1.0,3.8965654331889633e-16,1,1
+Mitiannuo No.1__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Mitiannuo No.1__2,3,corn,flax,False,0.0,6.552382192381856e-09,1.0,2,1
+Mitiannuo No.4__1,0,corn,flax,False,0.0,1.119854949356247e-19,1.0,2,1
+Mitiannuo No.4__1,1,corn,corn,True,0.0,1.0,2.846701319114686e-09,1,1
+Mitiannuo No.4__1,2,corn,flax,False,0.0,5.905761167509227e-38,1.0,2,1
+Mitiannuo No.4__1,3,corn,flax,False,0.0,3.0213075206120266e-06,0.9999970197677612,2,1
+Mitiannuo No.4__2,0,corn,flax,False,0.0,3.5076862062775365e-20,1.0,2,1
+Mitiannuo No.4__2,1,corn,corn,True,0.0,0.9999936819076538,6.368295998981921e-06,1,1
+Mitiannuo No.4__2,2,corn,flax,False,0.0,5.937882013545121e-16,1.0,2,1
+Mitiannuo No.4__2,3,corn,flax,False,0.0,0.0037049816455692053,0.9962950348854065,2,1
+Sida No.204__1,0,corn,flax,False,0.0,6.332607195196147e-20,1.0,2,1
+Sida No.204__1,1,corn,corn,True,0.0,1.0,9.668948800082027e-25,1,1
+Sida No.204__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__1,3,corn,corn,True,0.0,0.998580813407898,0.0014191699447110295,1,1
+Sida No.204__2,0,corn,flax,False,0.0,4.349200682698675e-18,1.0,2,1
+Sida No.204__2,1,corn,corn,True,0.0,1.0,2.9834343306579057e-22,1,1
+Sida No.204__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sida No.204__2,3,corn,flax,False,7.991880805464864e-26,0.022913698107004166,0.9770862460136414,2,1
+Sidanuo No.38__1,0,corn,flax,False,0.0,0.04080456122756004,0.9591954350471497,2,1
+Sidanuo No.38__1,1,corn,corn,True,0.0,1.0,4.097374288910336e-39,1,1
+Sidanuo No.38__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__1,3,corn,corn,True,0.0,1.0,7.806781103697965e-30,1,1
+Sidanuo No.38__2,0,corn,corn,True,0.0,1.0,1.338015171613782e-15,1,1
+Sidanuo No.38__2,1,corn,corn,True,0.0,1.0,1.2908341063820917e-40,1,1
+Sidanuo No.38__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.38__2,3,corn,corn,True,0.0,1.0,1.0708790845518425e-18,1,1
+Sidanuo No.44__1,0,corn,flax,False,0.0,7.965994154801592e-05,0.9999203681945801,2,1
+Sidanuo No.44__1,1,corn,corn,True,0.0,1.0,1.5094037131291316e-11,1,1
+Sidanuo No.44__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__1,3,corn,corn,True,0.0,0.9999998807907104,8.159848619015975e-08,1,1
+Sidanuo No.44__2,0,corn,corn,True,0.0,0.9999997615814209,2.0732242944632162e-07,1,1
+Sidanuo No.44__2,1,corn,flax,False,0.0,0.005373804364353418,0.9946262240409851,2,1
+Sidanuo No.44__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Sidanuo No.44__2,3,corn,flax,False,2.4827575606598163e-39,8.370861512632666e-13,1.0,2,1
+Yuecainuo No.2__1,0,corn,flax,False,0.0,9.500693417749395e-13,1.0,2,1
+Yuecainuo No.2__1,1,corn,corn,True,0.0,1.0,1.5177730600113293e-11,1,1
+Yuecainuo No.2__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__1,3,corn,flax,False,0.0,1.4619963226158994e-11,1.0,2,1
+Yuecainuo No.2__2,0,corn,corn,True,0.0,1.0,8.188379661822065e-12,1,1
+Yuecainuo No.2__2,1,corn,corn,True,0.0,1.0,2.082662123261469e-29,1,1
+Yuecainuo No.2__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Yuecainuo No.2__2,3,corn,corn,True,0.0,0.9999998807907104,1.1238394392876216e-07,1,1
+Zhenzhunuo No.8__1,0,corn,flax,False,1.4012432213708695e-31,3.0828566215145976e-44,1.0,2,1
+Zhenzhunuo No.8__1,1,corn,corn,True,1.8175967560196942e-15,1.0,1.1278291668637141e-11,1,1
+Zhenzhunuo No.8__1,2,corn,flax,False,0.0,0.0,1.0,2,1
+Zhenzhunuo No.8__1,3,corn,flax,False,2.253447428657296e-12,0.04271462932229042,0.9572853446006775,2,1
+Zhenzhunuo No.8__2,0,corn,flax,False,0.02195771411061287,2.6624670822171524e-44,0.9780423045158386,2,1
+Zhenzhunuo No.8__2,1,corn,flax,False,8.699269603285043e-14,1.3542774757527298e-12,1.0,2,1
+Zhenzhunuo No.8__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhenzhunuo No.8__2,3,corn,flax,False,6.074146741141817e-10,9.42917362075006e-23,1.0,2,1
+Zhuyunuo No.1__1,0,corn,corn,True,0.0,0.9999998807907104,1.4843369910977344e-07,1,1
+Zhuyunuo No.1__1,1,corn,corn,True,0.0,1.0,3.1707899723487216e-29,1,1
+Zhuyunuo No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__1,3,corn,corn,True,0.0,0.9837504029273987,0.016249632462859154,1,1
+Zhuyunuo No.1__2,0,corn,flax,False,0.0,0.006568890530616045,0.9934311509132385,2,1
+Zhuyunuo No.1__2,1,corn,corn,True,0.0,1.0,2.968220566758524e-31,1,1
+Zhuyunuo No.1__2,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyunuo No.1__2,3,corn,corn,True,0.0,1.0,3.813523119251122e-13,1,1
+Zhuyutian No.1__1,0,corn,flax,False,6.0255833965967134e-43,7.99601376954744e-19,1.0,2,1
+Zhuyutian No.1__1,1,corn,corn,True,8.407790785948902e-45,1.0,2.3141222271760853e-09,1,1
+Zhuyutian No.1__1,2,corn,corn,True,0.0,1.0,0.0,1,1
+Zhuyutian No.1__1,3,corn,corn,True,3.836292766828122e-40,1.0,4.5599590769995757e-10,1,1
